@@ -1,2 +1,8 @@
 # PHP-Banking-App-OOP-PDO
-Console-based PHP banking application using OOP and PDO, featuring client and account management, transactions, and clean architecture.
+This PHP console banking application demonstrates Object-Oriented Programming (OOP) principles, database handling with PDO, and clean architecture.
+
+- Manage clients, bank accounts, and transactions
+
+- Implement business rules and secure CRUD operations
+
+- Designed for learning professional back-end development practices
