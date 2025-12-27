@@ -1,5 +1,5 @@
 <?php
-namespace Services;
+namespace App\Services;
 use App\Entities\Client;
 use App\Repositories\ClientRepository;
 class ClientService {

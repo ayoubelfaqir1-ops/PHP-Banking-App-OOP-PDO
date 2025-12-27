@@ -20,7 +20,7 @@ class CompteRepository
     public function insert(Compte $compte, int $clientId)
     {
         $sql = "
-        INSERT INTO compte (client_id, solde, type_compte)
+        INSERT INTO comptes (client_id, solde, type_compte)
         VALUES (:client_id, :solde, :type_compte)
         ";
 
@@ -37,26 +37,27 @@ class CompteRepository
     public function getbyid($clientid)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM comptes WHERE client_id = :client_id");
-        $stmt->execute([':client_id'=>$clientid]);
+        $stmt->execute([':client_id' => $clientid]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? $compte = new Compte($row['client_id'],$row['solde'],$row['id']) : null;
+        $type = $row['type_compte'];
+        if ($type === 'epargne') {
+            return new CompteEpargne($row['client_id'], $row['solde'], $row['id']);
+        }
+        return $row ? $compte = new CompteCourant($row['client_id'], $row['solde'], $row['id']) : null;
     }
 
     public function getallcomptes()
     {
-        $stmt =$this->pdo->query("SELECT * FROM comptes");
+        $stmt = $this->pdo->query("SELECT * FROM comptes");
         $comptes = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $comptes[] = new Compte($row['client_id'],$row['solde'],$row['id']);
+            $comptes[] = new Compte($row['client_id'], $row['solde'], $row['id']);
         }
         return $comptes;
     }
     public function delete($id)
     {
         $stmt = $this->pdo->prepare("DELETE FROM comptes WHERE id = :id");
-        return $stmt->execute([':id'=>$id]);
+        return $stmt->execute([':id' => $id]);
     }
-
-
-
 }

@@ -1,24 +1,28 @@
 <?php
+
 namespace App\Entities;
 
 class Client
 {
     private ?int $id = null;
     private string $nom;
-    private string $email ;
+    private string $email;
     public string $emailErr;
 
-    public function __construct(string $nom, string $email,?int $id = null)
+    public function __construct(string $nom, string $email, ?int $id = null)
     {
         $this->nom = $nom;
-        $this->Emailverify($email);
         $this->id = $id;
+        $this->Emailverify($email);
     }
-    public function Emailverify($email)
+
+    public function Emailverify($email): void
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->emailErr = "Invalid email format";
-        }else return $this->email = $email;
+            throw new \App\Exceptions\ClientException("Invalid email format: $email");  // ✅ Stops execution
+        }
+        $this->email = $email;  // ✅ Always sets if we get here
     }
 
     public function getId(): ?int

@@ -26,7 +26,7 @@ class ClientRepository {
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data ? new Client($data['name'], $data['email'], $data['phone'], $data['id']) : null;
+        return $data ? new Client($data['name'], $data['email'], $data['id']) : null;
     }
 
     public function getAll() {
@@ -41,12 +41,12 @@ class ClientRepository {
     
     public function update(Client $client) {
         $stmt = $this->pdo->prepare(
-            "UPDATE clients SET name = :name, email = :email, phone = :phone WHERE id = :id"
+            "UPDATE clients SET name = :name, email = :email WHERE id = :id"
         );
         return $stmt->execute([
-            'name' => $client->getNom(),
-            'email' => $client->getEmail(),  
-            'id' => $client->getid()
+            ':name' => $client->getNom(),
+            ':email' => $client->getEmail(),  
+            ':id' => $client->getid()
         ]);
     }
 

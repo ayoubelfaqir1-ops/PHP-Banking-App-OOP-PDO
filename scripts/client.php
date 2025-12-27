@@ -2,7 +2,7 @@
 
 use App\Entities\Client;
 use App\Repositories\ClientRepository;
-use Services\ClientService;
+use App\Services\ClientService;
 
 
 // PDO connection

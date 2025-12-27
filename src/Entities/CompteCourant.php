@@ -11,9 +11,12 @@ class CompteCourant extends Compte
     }
 
     public function depot(float $montant): void
-    {
-        $this->solde += $montant-1;
+{
+    if ($montant <= 1) {
+        throw new CompteException('Le montant du dépôt doit êtrelus que 1$');
     }
+    $this->solde += $montant;
+}
 
     public function retrait(float $montant): void
     {
