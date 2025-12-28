@@ -1,17 +1,24 @@
 <?php
-declare(strict_types=1);
-namespace AppBancaire\Services;
+namespace App\Services;
 
-use AppBancaire\Repositories\TransactionRepository;
+use App\Entities\Transaction;
+use App\Repositories\TransactionRepository;
 
 class TransactionService
 {
-    private TransactionRepository $repo;
+    private $repo;
 
     public function __construct(TransactionRepository $repo)
     {
         $this->repo = $repo;
     }
 
-    // Logique métier à implémenter
+    public function createTransaction($type, $montant, $compteId) {
+        $transaction = new Transaction($type, $montant, $compteId);
+        return $this->repo->insert($transaction);
+    }
+
+    public function getAllTransactions() {
+        return $this->repo->getAll();
+    }
 }

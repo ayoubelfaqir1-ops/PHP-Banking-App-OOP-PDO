@@ -10,7 +10,7 @@ class ClientService {
     }
 
     public function createClient($name, $email, $phone = null) {
-        $client = new Client($name, $email, $phone);
+        $client = new Client($name, $email);
         return $this->repo->insert($client);
     }
 
@@ -23,7 +23,7 @@ class ClientService {
     }
 
     public function updateClient($id, $name, $email, $phone = null) {
-        $client = new Client($name, $email, $phone, $id);
+        $client = new Client($name, $email, $id);
         return $this->repo->update($client);
     }
 

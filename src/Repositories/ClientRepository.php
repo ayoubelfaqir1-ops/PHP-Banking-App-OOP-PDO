@@ -12,10 +12,10 @@ class ClientRepository {
     
     public function insert(Client $client) {
         $stmt = $this->pdo->prepare(
-            "INSERT INTO clients (name, email) VALUES (:name, :email)"
+            "INSERT INTO clients (nom, email) VALUES (:nom, :email)"
         );
         $stmt->execute([
-            'name' => $client->getNom(),
+            'nom' => $client->getNom(),
             'email' => $client->getEmail(),
         ]);
         return $this->pdo->lastInsertId();
@@ -26,14 +26,14 @@ class ClientRepository {
         $stmt = $this->pdo->prepare("SELECT * FROM clients WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data ? new Client($data['name'], $data['email'], $data['id']) : null;
+        return $data ? new Client($data['nom'], $data['email'], $data['id']) : null;
     }
 
     public function getAll() {
         $stmt = $this->pdo->query("SELECT * FROM clients");
         $clients = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $clients[] = new Client($row['name'], $row['email'], $row['id']);
+            $clients[] = new Client($row['nom'], $row['email'], $row['id']);
         }
         return $clients;
     }
@@ -41,10 +41,10 @@ class ClientRepository {
     
     public function update(Client $client) {
         $stmt = $this->pdo->prepare(
-            "UPDATE clients SET name = :name, email = :email WHERE id = :id"
+            "UPDATE clients SET nom = :nom, email = :email WHERE id = :id"
         );
         return $stmt->execute([
-            ':name' => $client->getNom(),
+            ':nom' => $client->getNom(),
             ':email' => $client->getEmail(),  
             ':id' => $client->getid()
         ]);

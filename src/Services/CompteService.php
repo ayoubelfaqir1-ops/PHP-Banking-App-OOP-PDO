@@ -1,5 +1,5 @@
 <?php
-namespace Services;
+namespace App\Services;
 use App\Entities\Compte;
 use App\Entities\CompteEpargne;
 use App\Entities\CompteCourant;
@@ -11,14 +11,14 @@ class CompteService {
         $this->repo = $repo;
     }
 
-    public function createCompte(int $clientId, string $typeCompte, float $solde, int $clientid): int {
-    if ($typeCompte === 'courant') {
-        $compte = new CompteCourant($clientId, $solde, $clientid);  // ✅ Correct!
-    } elseif ($typeCompte === 'epargne') {
-        $compte = new CompteEpargne($clientId, $solde,$clientid);
+    public function createCompte(int $clientId, string $typeCompte, float $solde): int {
+        if ($typeCompte === 'courant') {
+            $compte = new CompteCourant($clientId, $solde);
+        } elseif ($typeCompte === 'epargne') {
+            $compte = new CompteEpargne($clientId, $solde);
+        }
+        return $this->repo->insert($compte, $clientId);
     }
-    return $this->repo->insert($compte,$clientId);
-}
 
     public function getCompte($id) {
         return $this->repo->getById($id);
@@ -33,4 +33,3 @@ class CompteService {
     }
 }
 ?>
-

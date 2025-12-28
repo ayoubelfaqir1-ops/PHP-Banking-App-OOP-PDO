@@ -34,16 +34,19 @@ class CompteRepository
         return $this->pdo->lastInsertId();
     }
 
-    public function getbyid($clientid)
+    public function getById($clientid)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM comptes WHERE client_id = :client_id");
         $stmt->execute([':client_id' => $clientid]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $type = $row['type_compte'];
+        if (!$row) {
+            return null;
+        }
+        $type = $row['type_compte'] ?? null;
         if ($type === 'epargne') {
             return new CompteEpargne($row['client_id'], $row['solde'], $row['id']);
         }
-        return $row ? $compte = new CompteCourant($row['client_id'], $row['solde'], $row['id']) : null;
+        return new CompteCourant($row['client_id'], $row['solde'], $row['id']);
     }
 
     public function getallcomptes()
@@ -51,7 +54,12 @@ class CompteRepository
         $stmt = $this->pdo->query("SELECT * FROM comptes");
         $comptes = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $comptes[] = new Compte($row['client_id'], $row['solde'], $row['id']);
+            $type = $row['type_compte'] ?? null;
+            if ($type === 'epargne') {
+                $comptes[] = new CompteEpargne($row['client_id'], $row['solde'], $row['id']);
+            } else {
+                $comptes[] = new CompteCourant($row['client_id'], $row['solde'], $row['id']);
+            }
         }
         return $comptes;
     }

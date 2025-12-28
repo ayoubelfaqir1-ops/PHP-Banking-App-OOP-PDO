@@ -2,31 +2,26 @@
 
 namespace App\Entities;
 
-use App\Entities\Transactiontype;
-
 class Transaction
 {
-    private int $compteid;
-    private Transactiontype $type;
+    private ?int $id = null;
+    private string $type;
     private float $montant;
+    private int $compteId;
+    private string $date;
 
-    public function __construct(int $compteid, string $type, float $montant)
+    public function __construct(string $type, float $montant, int $compteId, ?string $date = null, ?int $id = null)
     {
-        $this->compteid = $compteid;
-        $this->type = Transactiontype::from($type);
+        $this->type = $type;
         $this->montant = $montant;
+        $this->compteId = $compteId;
+        $this->date = $date ?? date('Y-m-d H:i:s');
+        $this->id = $id;
     }
 
-    public function getCompteId(): int
-    {
-        return $this->compteid;
-    }
-    public function getType(): Transactiontype
-    {
-        return $this->type;
-    }
-    public function getMontant(): float
-    {
-        return $this->montant;
-    }
+    public function getId(): ?int { return $this->id; }
+    public function getType(): string { return $this->type; }
+    public function getMontant(): float { return $this->montant; }
+    public function getCompteId(): int { return $this->compteId; }
+    public function getDate(): string { return $this->date; }
 }
